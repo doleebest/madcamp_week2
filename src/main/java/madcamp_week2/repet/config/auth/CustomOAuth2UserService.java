@@ -61,33 +61,21 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Transactional
     public User saveOrUpdate(OAuthAttributes attributes) {
         String email = attributes.getEmail();
-        System.out.println(email);
-//        Optional<User> existingUser = userRepository.findByEmail(email);
-//        System.out.println(existingUser.get().getEmail());
-//        if (existingUser.isPresent()) {
-//            // 기존 사용자 업데이트
-//            System.out.println("기존 사용자 존재, 업데이트 시작...");
-//            User updatedUser = existingUser.get().update(attributes.getName(), attributes.getPicture());
-//            return updatedUser;
-//        } else {
-//            // 신규 사용자 추가
-//            System.out.println("기존 사용자 없음, 새로운 사용자 삽입...");
-//            User newUser = attributes.toEntity();
-//            User savedUser = userRepository.save(newUser);
-//            return savedUser;
-//        }
-        User user = userRepository.findByEmail(attributes.getEmail())
-                // 구글 사용자 정보 업데이트(이미 가입된 사용자) => 업데이트
-//                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
-                // 가입되지 않은 사용자 => User 엔티티 생성
-                //.orElse(attributes.toEntity());
-                .orElseGet(() -> {
-                    System.out.println("새로운 사용자 삽입");
-                    User newUser = attributes.toEntity();
-                    System.out.println("새로 생성된 사용자: " + newUser);
-                    return userRepository.save(newUser);                });
-        return user; // 안됐던 이유 : pk 값은 Id, 근데 바인딩해야했던 값은 email (그래서 User에서 Pk 값을 다시 email로 해줬더니 해결!)
+        System.out.println("이메일 확인: " + email);
+
+        // 사용자 조회
+        Optional<User> existingUser = userRepository.findByEmail(email);
+
+        if (existingUser.isPresent()) {
+            System.out.println("기존 사용자 존재, 업데이트 진행...");
+            User user = existingUser.get();
+            user.update(attributes.getName(), attributes.getPicture()); // update 메서드 확인
+            return user;
+        } else {
+            System.out.println("기존 사용자 없음, 새로운 사용자 삽입...");
+            User newUser = attributes.toEntity();
+            System.out.println("새 사용자 생성: " + newUser.getEmail());
+            return userRepository.save(newUser);
+        }
     }
-
-
 }

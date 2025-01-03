@@ -12,12 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "email")
+    @Id
+    @Column(name = "email", nullable = false)
     private String email;
-
-    @NotNull
-    private String Id;
 
     @NotNull
     private String name;
