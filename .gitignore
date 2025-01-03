@@ -39,3 +39,4 @@ out/
 # Ignore OAuth credentials
 src/main/resources/application-oauth.yml
 src/main/resources/application.yml
+src/main/resources/application.properties

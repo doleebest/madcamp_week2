@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long id;
+    @Column(name = "email")
+    private String email;
+
+    @NotNull
+    private String Id;
 
     @NotNull
     private String name;
-
-    @NotNull
-    private String email;
 
     @Column
     private String picture; // 프로필 사진

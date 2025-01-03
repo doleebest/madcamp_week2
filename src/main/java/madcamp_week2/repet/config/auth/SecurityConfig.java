@@ -2,6 +2,7 @@ package madcamp_week2.repet.config.auth;
 
 import lombok.RequiredArgsConstructor;
 import madcamp_week2.repet.Domain.Role;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -13,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 @EnableWebSecurity // spring security 활성화
 public class SecurityConfig {
+    @Autowired
     private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
