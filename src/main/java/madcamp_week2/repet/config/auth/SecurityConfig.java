@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity
+@EnableWebSecurity // spring security 활성화
 public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
 
