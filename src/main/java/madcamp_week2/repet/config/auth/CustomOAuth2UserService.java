@@ -60,7 +60,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 // 구글 사용자 정보 업데이트(이미 가입된 사용자) => 업데이트
                 .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
                 // 가입되지 않은 사용자 => User 엔티티 생성
-                .orElse(attributes.toEntity());
+                //.orElse(attributes.toEntity());
+                .orElseGet(() -> userRepository.save(attributes.toEntity()));
 
         return userRepository.save(user);
     }

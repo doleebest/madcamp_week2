@@ -32,7 +32,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .logout( // 로그아웃 성공 시 / 주소로 이동
-                        (logoutConfig) -> logoutConfig.logoutSuccessUrl("/")
+                        (logoutConfig) -> logoutConfig.logoutSuccessUrl("/list") // 일단 임시로 게시판 목록으로 설정해두기
                 )
                 // OAuth2 로그인 기능에 대한 여러 설정
                 .oauth2Login(Customizer.withDefaults()); // 아래 코드와 동일한 결과
