@@ -1,4 +1,4 @@
-package madcamp_week2.repet.config.auth;
+package madcamp_week2.repet.config.auth.dto;
 import lombok.Builder;
 import lombok.Getter;
 import madcamp_week2.repet.Domain.Role;
