@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Collections;
 import java.util.Optional;
 
+import static java.awt.SystemColor.window;
+
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -49,8 +51,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 사용자 저장 또는 업데이트
         User user = saveOrUpdate(attributes);
         // 세션에 사용자 정보 저장
-
-
+        //window.location.href = "http://localhost:3000/?email:~~~" // localhost:3000/login으로 가게 redirect
         httpSession.setAttribute("user", user);
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),

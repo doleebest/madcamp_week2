@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Pet</title>
+</head>
+<body>
+<h1>Chat with Your Pet</h1>
+
+<form action="/pets/${pet.id}/chat" method="post"> <!-- method="post" 그대로 두고, {{pet.id}}를 ${pet.id}로 수정 -->
+    <label for="message">Enter your message:</label>
+    <textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
+    <button type="submit">Send Message</button>
+</form>
+
+<h2>Chat Response:</h2>
+<div id="chat-response">
+    <p>${chatResponse}</p> <!-- chatResponse도 Thymeleaf 표현식으로 수정 -->
+</div>
+</body>
+</html>

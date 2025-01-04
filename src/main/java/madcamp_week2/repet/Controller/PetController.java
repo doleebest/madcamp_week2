@@ -42,8 +42,8 @@ public class PetController {
         return "redirect:/pets";
     }
 
-    @GetMapping("/{id}/chat")
-    public String chatWithPet(@PathVariable Long id, @RequestParam String message) {
+    @PostMapping("/{id}/chat")
+    public String chatWithPet(@PathVariable Long id, @RequestParam String message, Model model) {
         Optional<Pet> petOptional = petService.getPetById(id);
         if (petOptional.isEmpty()) {
             return "Pet not found!";
@@ -56,6 +56,15 @@ public class PetController {
                 pet.getTraits(), pet.getHappy_memory(), pet.getMishap(), pet.getStrengths(), pet.getWeaknesses()
         );
 
-        return chatGPTService.chatWithPet(petInfo, message);
+        // ChatGPT와 대화하고 응답 받기
+        String chatResponse = chatGPTService.chatWithPet(petInfo, message);
+
+        // 응답을 모델에 추가하여 뷰로 전달
+        model.addAttribute("chatResponse", chatResponse);
+        model.addAttribute("pet", pet);
+
+        return "pets/chat"; // 채팅 응답을 표시할 페이지로 이동
     }
+
+
 }
