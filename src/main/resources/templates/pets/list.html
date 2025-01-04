@@ -8,7 +8,16 @@
 <a href="/pets/new">Add New Pet</a>
 <ul>
     <li th:each="pet : ${pets}">
-        <strong th:text="${pet.name}">Pet Name</strong> - <span th:text="${pet.breed}">Breed</span>
+        <strong th:text="${pet.name}">Pet Name</strong> -
+        <span th:text="${pet.breed}">Breed</span> -
+        <span th:text="${pet.gender}">Gender</span> -
+        <span th:text="${pet.birthDate}">Birthday</span> -
+        <span th:text="${pet.personality}">Character</span> -
+        <span th:text="${pet.traits}">Traits</span> -
+        <span th:text="${pet.happy_memory}">Happy Memory</span> -
+        <span th:text="${pet.mishap}">Mischief</span> -
+        <span th:text="${pet.strengths}">Strong Points</span> -
+        <span th:text="${pet.weaknesses}">Weak Points</span>
     </li>
 </ul>
 </body>

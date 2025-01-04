@@ -6,28 +6,28 @@
 <body>
 <h1>Add a New Pet</h1>
 <form action="/pets" method="post" th:object="${pet}">
-    <label>Name:</label>
+    <label>이름 :</label>
     <input type="text" th:field="*{name}" /><br />
-    <label>Birth Date:</label>
+    <label>생일 :</label>
     <input type="date" th:field="*{birthDate}" /><br />
-    <label>Gender:</label>
+    <label>성별 :</label>
     <select th:field="*{gender}">
         <option value="Male">Male</option>
         <option value="Female">Female</option>
     </select><br />
-    <label>Breed:</label>
+    <label>품종 :</label>
     <input type="text" th:field="*{breed}" /><br />
-    <label>Personality:</label>
+    <label>성격 :</label>
     <input type="text" th:field="*{personality}" /><br />
-    <label>Traits:</label>
+    <label>습관 :</label>
     <input type="text" th:field="*{traits}" /><br />
-    <label>Happy Memory:</label>
-    <textarea th:field="*{happyMemory}"></textarea><br />
-    <label>Mishap:</label>
+    <label>행복했던 추억:</label>
+    <textarea th:field="*{happy_memory}"></textarea><br />
+    <label>사고친 경험:</label>
     <textarea th:field="*{mishap}"></textarea><br />
-    <label>Strengths:</label>
+    <label>장점 :</label>
     <textarea th:field="*{strengths}"></textarea><br />
-    <label>Weaknesses:</label>
+    <label>단점 :</label>
     <textarea th:field="*{weaknesses}"></textarea><br />
     <button type="submit">Save</button>
 </form>
