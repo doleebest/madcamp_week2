@@ -18,22 +18,22 @@ public class BoardController {
     }
 
     // 가져온 데이터를 model을 통해 view에 전달
-    @GetMapping("/")
+    @GetMapping("/list")
     public String list(Model model) { // model : 뷰(HTML 페이지)와 데이터를 공유하기 위해 사용되는 객체
         List<BoardDto> boardDtoList = boardService.getBoardList();
         model.addAttribute("postList", boardDtoList); // 뷰에서 사용할 데이터 boardDto를 model에 추가
-        return "board/list.html";
+        return "boardList";
     }
 
 
     @GetMapping("/post")
     public String post(){
-        return "board/post.html";
+        return "post";
     }
 
     @PostMapping("/post")
     public String write(BoardDto boardDto){
         boardService.savePost(boardDto);
-        return "redirect:/";
+        return "redirect:/list";
     }
 }

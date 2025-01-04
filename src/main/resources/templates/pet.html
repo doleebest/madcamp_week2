@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>애완견 정보</title>
+</head>
+<body>
+<h1>내 애완견 목록</h1>
+<ul>
+    <li th:each="pet : ${pets}">
+        <span th:text="${pet.name}"></span> -
+        <span th:text="${pet.age}"></span>살,
+        <span th:text="${pet.breed}"></span>
+    </li>
+</ul>
+
+<h2>애완견 추가</h2>
+<form th:action="@{/pets}" method="post">
+    이름: <input type="text" name="name" />
+    나이: <input type="number" name="age" />
+    품종: <input type="text" name="breed" />
+    <button type="submit">추가</button>
+</form>
+</body>
+</html>

@@ -24,7 +24,7 @@ public class BoardService {
     }
 
     // 데베에서 게시글을 조회하여 dto로 변환 후 반환
-    @Transactional
+        @Transactional
     public List<BoardDto> getBoardList(){
         List<Board> boardList = boardRepository.findAll(); // board 엔티티를 모두 조회해서 List<Board> 형태로 반환
         List<BoardDto> boardDtoList = new ArrayList<>(); // 엔티티 데이터를 dto로 변환한 결과를 저장할 리스트
