@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PetRepository extends JpaRepository<Pet, Long> {
-    // 이름으로 애완견을 찾는 쿼리 메소드 정의
-    Pet findByName(String name);
 }

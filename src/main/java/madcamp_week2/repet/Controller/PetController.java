@@ -1,24 +1,26 @@
 package madcamp_week2.repet.Controller;
 
+import io.github.flashvayne.chatgpt.service.ChatgptService;
 import org.springframework.ui.Model;
 import madcamp_week2.repet.Domain.Pet;
 import madcamp_week2.repet.Service.PetService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import madcamp_week2.repet.Service.ChatGPTService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/pets")
 public class PetController {
     private final PetService petService;
+    private final ChatGPTService chatGPTService;
 
-    public PetController(PetService petService)
+    public PetController(PetService petService, ChatGPTService chatGPTService)
     {
         this.petService = petService;
+        this.chatGPTService = chatGPTService;
     }
 
     @GetMapping
@@ -38,5 +40,22 @@ public class PetController {
     public String savePet(@ModelAttribute Pet pet){
         petService.savePet(pet);
         return "redirect:/pets";
+    }
+
+    @GetMapping("/{id}/chat")
+    public String chatWithPet(@PathVariable Long id, @RequestParam String message) {
+        Optional<Pet> petOptional = petService.getPetById(id);
+        if (petOptional.isEmpty()) {
+            return "Pet not found!";
+        }
+
+        Pet pet = petOptional.get();
+        String petInfo = String.format(
+                "Name: %s\nBirthDate: %s\nGender: %s\nBreed: %s\nPersonality: %s\nTraits: %s\nHappy Memory: %s\nMishap: %s\nStrengths: %s\nWeaknesses: %s",
+                pet.getName(), pet.getBirthDate(), pet.getGender(), pet.getBreed(), pet.getPersonality(),
+                pet.getTraits(), pet.getHappy_memory(), pet.getMishap(), pet.getStrengths(), pet.getWeaknesses()
+        );
+
+        return chatGPTService.chatWithPet(petInfo, message);
     }
 }

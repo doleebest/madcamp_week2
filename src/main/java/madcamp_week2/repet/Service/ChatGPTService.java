@@ -1,34 +1,60 @@
 package madcamp_week2.repet.Service;
 
-import lombok.Value;
-import org.springframework.stereotype.Service;
-import com.theokanning.openai.OpenAiService;
-import com.theokanning.openai.completion.CompletionRequest;
-import com.theokanning.openai.completion.CompletionResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ChatGPTService {
-    @Value("${openai.api.key}") // OpenAI API 키를 application.properties에 설정합니다
+
+    @Value("${openai.api-key}")
     private String apiKey;
 
-    private OpenAiService openAiService;
+    public String chatWithPet(String petInfo, String userMessage) {
+        String apiUrl = "https://api.openai.com/v1/chat/completions";
 
-    public ChatGPTService() {
-        this.openAiService = new OpenAiService(apiKey);
+        RestTemplate restTemplate = new RestTemplate();
+
+        // 요청 바디 생성
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("model", "gpt-3.5-turbo");
+        requestBody.put("messages", new Object[]{
+                Map.of("role", "system", "content", "You are a pet who has passed away and can now communicate your owner with the information of yourself. Speak in Korean."),
+                Map.of("role", "user", "content", petInfo),
+                Map.of("role", "user", "content", userMessage)
+        });
+
+        // 헤더 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + apiKey);
+        headers.set("Content-Type", "application/json");
+
+        // HttpEntity 생성
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+
+        try {
+            // 요청 보내기
+            ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, entity, String.class);
+
+            // 응답 처리
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(response.getBody());
+            return root.path("choices").get(0).path("message").path("content").asText();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "Sorry, there was an error processing your request.";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Sorry, an unexpected error occurred.";
+        }
     }
-    public String chatWithPet(String petName, String petPersonality, String userInput) {
-        String prompt = "너는 " + petName + "라는 애완견이고, 성격은 " + petPersonality + "이야. 이제 대화를 시작해봐. " + userInput;
-
-        CompletionRequest completionRequest = CompletionRequest.builder()
-                .prompt(prompt)
-                .maxTokens(150)
-                .temperature(0.9)
-                .build();
-
-        CompletionResult result = openAiService.createCompletion("text-davinci-003", completionRequest);
-        return result.getChoices().get(0).getText().trim();
-    }
-
 }

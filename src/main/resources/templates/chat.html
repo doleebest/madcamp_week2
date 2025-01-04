@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat with Pet</title>
+</head>
+<body>
+<h1>Chat with your pet</h1>
+
+<div>
+    <h2>Pet Information</h2>
+    <pre th:text="${petInfo}"></pre> <!-- petInfo를 출력 -->
+</div>
+
+<div>
+    <form th:action="@{/chat/send/{id}(id=${pet.id})}" method="post">
+        <textarea name="message" placeholder="Enter your message" required></textarea>
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<div>
+    <h3>Response</h3>
+    <p th:text="${response}"></p> <!-- 응답을 출력 -->
+</div>
+
+<div>
+    <p th:text="${error}"></p> <!-- 오류 메시지 출력 -->
+</div>
+</body>
+</html>
