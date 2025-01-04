@@ -22,4 +22,8 @@ public class PetService {
         return petRepository.findAll();
     }
 
+    public Pet getPetByName(String name) {
+        return petRepository.findByName(name);
+    }
+
 }

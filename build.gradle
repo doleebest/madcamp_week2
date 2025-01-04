@@ -29,6 +29,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // google login security
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // html 찾는 의존성 라이브러리
+	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4' // chatapt-api 이용
+	implementation 'com.theokanning.openai:openai-service:0.10.0' // chatgpt-api 와 통신
+	implementation 'com.theokanning:openai-java:0.10.0'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
