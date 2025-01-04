@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pet List</title>
+</head>
+<body>
+<h1>Pet List</h1>
+<a href="/pets/new">Add New Pet</a>
+<ul>
+    <li th:each="pet : ${pets}">
+        <strong th:text="${pet.name}">Pet Name</strong> - <span th:text="${pet.breed}">Breed</span>
+    </li>
+</ul>
+</body>
+</html>
