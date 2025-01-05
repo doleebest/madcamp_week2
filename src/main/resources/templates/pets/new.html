@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Pet</title>
+</head>
+<body>
+<h1>Add a New Pet</h1>
+<form action="/pets" method="post" th:object="${pet}">
+    <label>이름 :</label>
+    <input type="text" th:field="*{name}" /><br />
+    <label>생일 :</label>
+    <input type="date" th:field="*{birthDate}" /><br />
+    <label>성별 :</label>
+    <select th:field="*{gender}">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+    </select><br />
+    <label>품종 :</label>
+    <input type="text" th:field="*{breed}" /><br />
+    <label>성격 :</label>
+    <input type="text" th:field="*{personality}" /><br />
+    <label>습관 :</label>
+    <input type="text" th:field="*{traits}" /><br />
+    <label>행복했던 추억:</label>
+    <textarea th:field="*{happy_memory}"></textarea><br />
+    <label>사고친 경험:</label>
+    <textarea th:field="*{mishap}"></textarea><br />
+    <label>장점 :</label>
+    <textarea th:field="*{strengths}"></textarea><br />
+    <label>단점 :</label>
+    <textarea th:field="*{weaknesses}"></textarea><br />
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>
