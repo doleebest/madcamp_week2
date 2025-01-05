@@ -22,7 +22,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/board/**","/pet/**").authenticated()  // API는 인증 필요
+                        .requestMatchers("/board/**","/pet/**", "/chat/**").authenticated()  // API는 인증 필요
                         .requestMatchers("/", "/login/**", "/oauth2/**").permitAll()
                         .anyRequest().authenticated()
                 )
