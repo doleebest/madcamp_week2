@@ -3,6 +3,7 @@ package madcamp_week2.repet.Controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class LoginController {
@@ -13,8 +14,8 @@ public class LoginController {
     }
 
     @GetMapping("/loginSuccess")
-    @ResponseBody
-    public String loginSuccess() {
-        return "Login Successful!";
+    public String loginSuccess(RedirectAttributes redirectAttributes)
+    {
+        return "redirect:http://localhost:3000/dashboard";
     }
 }
