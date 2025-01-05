@@ -22,11 +22,10 @@ public class ChatService {
     public ChatMessage startChat(Long petId, String userId) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new IllegalArgumentException("Pet not found"));
-        User user = userRepository.findById(Long.parseLong(userId))
+        User user = userRepository.findById(userId)  // 이제 String 그대로 사용
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        // 권한 체크 로직도 수정
-        if (!pet.getUser().getId().equals(Long.parseLong(userId))) {
+        if (!pet.getUser().getId().equals(userId)) {  // String 비교
             throw new IllegalArgumentException("Not authorized");
         }
 
@@ -44,10 +43,10 @@ public class ChatService {
     public ChatMessage sendMessage(Long petId, String userId, String message) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new IllegalArgumentException("Pet not found"));
-        User user = userRepository.findById(Long.parseLong(userId))
+        User user = userRepository.findById(userId)  // 이제 String 그대로 사용
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        if (!pet.getUser().getId().equals(Long.parseLong(userId))) {
+        if (!pet.getUser().getId().equals(userId)) {  // String 비교
             throw new IllegalArgumentException("Not authorized");
         }
 

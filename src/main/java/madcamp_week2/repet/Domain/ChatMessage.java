@@ -21,6 +21,8 @@ public class ChatMessage {
     private User user;
 
     private String userMessage;
+
+    @Column(columnDefinition = "TEXT")  // VARCHAR 대신 TEXT 타입 사용
     private String petResponse;
     private LocalDateTime createdAt;
 

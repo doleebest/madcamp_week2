@@ -5,14 +5,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // @GeneratedValue(strategy = GenerationType.IDENTITY) // 얘는 String과 함께 사용할 수 없음
+    private String id;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Pet> pets = new ArrayList<>();
 
     @Column(nullable = false)
     private String name;
@@ -25,7 +31,8 @@ public class User {
     private Role role;
 
     @Builder
-    public User(String name, String email, Role role) {
+    public User(String id, String name, String email, Role role) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.role = role;
