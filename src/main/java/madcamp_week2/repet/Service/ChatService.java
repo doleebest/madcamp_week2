@@ -1,6 +1,7 @@
 package madcamp_week2.repet.Service;
 
 import lombok.RequiredArgsConstructor;
+import madcamp_week2.repet.DTO.ChatResponseDTO;
 import madcamp_week2.repet.Domain.ChatMessage;
 import madcamp_week2.repet.Domain.Pet;
 import madcamp_week2.repet.Domain.User;
@@ -8,10 +9,14 @@ import madcamp_week2.repet.Repository.ChatMessageRepository;
 import madcamp_week2.repet.Repository.PetRepository;
 import madcamp_week2.repet.Repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ChatService {
     private final PetRepository petRepository;
@@ -59,5 +64,21 @@ public class ChatService {
                 .petResponse(response)
                 .createdAt(LocalDateTime.now())
                 .build());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ChatResponseDTO> getChatHistory(Long petId, String userId) {
+        // 채팅 히스토리 조회 기능 추가
+        Pet pet = petRepository.findById(petId)
+                .orElseThrow(() -> new IllegalArgumentException("Pet not found"));
+
+        if (!pet.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("Not authorized");
+        }
+
+        return chatMessageRepository.findByPetIdOrderByCreatedAtDesc(petId)
+                .stream()
+                .map(ChatResponseDTO::from)
+                .collect(Collectors.toList());
     }
 }
