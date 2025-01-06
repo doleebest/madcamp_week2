@@ -24,15 +24,21 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    @Column(nullable = false)
+    private String picture;
+
     @Builder
-    public User(String name, String email, Role role) {
+    public User(String name, String email, Role role, String picture) {
         this.name = name;
         this.email = email;
         this.role = role;
+        this.picture = picture;
     }
 
-    public User update(String name) {
+    public User update(String name, String picture) {
+        System.out.println(name + picture);
         this.name = name;
+        this.picture = picture;
         return this;
     }
 }
