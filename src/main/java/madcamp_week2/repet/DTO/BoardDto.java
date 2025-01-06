@@ -14,25 +14,31 @@ public class BoardDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private String userEmail;
+    private String imageFileName;
+    private String originalFileName;
 
     // Entity로 변환
     public Board toEntity() {
         return Board.builder()
                 .title(title)
                 .content(content)
+                .imageFileName(imageFileName)
+                .originalFileName(originalFileName)
                 .build();
     }
 
     @Builder
     public BoardDto(Long id, String title, String content,
                     LocalDateTime createdDate, LocalDateTime modifiedDate,
-                    String userEmail) {
+                    String userEmail, String imageFileName, String originalFileName) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
         this.userEmail = userEmail;
+        this.imageFileName = imageFileName;
+        this.originalFileName = originalFileName;
     }
 
     // Entity를 DTO로 변환
@@ -44,6 +50,8 @@ public class BoardDto {
                 .createdDate(board.getCreatedDate())
                 .modifiedDate(board.getModifiedDate())
                 .userEmail(board.getUser().getEmail())
+                .imageFileName(board.getImageFileName())
+                .originalFileName(board.getOriginalFileName())
                 .build();
     }
 }
