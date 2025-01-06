@@ -10,7 +10,7 @@ import java.util.Map;
 public class OAuthAttributes {
     private Map<String, Object> attributes;
     private String nameAttributeKey;
-    private Long ID;
+    // private Long ID;
     private String name;
     private String email;
     private String picture;
@@ -50,6 +50,7 @@ public class OAuthAttributes {
     // User 엔티티 생성
     public User toEntity() {
         return User.builder()
+                .id(email)
                 .name(name)
                 .email(email)
                 //.picture(picture)

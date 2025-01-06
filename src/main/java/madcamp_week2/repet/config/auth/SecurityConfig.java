@@ -1,6 +1,7 @@
 package madcamp_week2.repet.config.auth;
 
 import lombok.RequiredArgsConstructor;
+import madcamp_week2.repet.Domain.Role;
 import madcamp_week2.repet.config.auth.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,17 +21,18 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
-
     private final CustomOAuth2UserService customOAuth2UserService;
 
-    // CORS 설정 추가
+
+    //CORS 설정 추가
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));  // React 애플리케이션의 URL
+
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // react app의 Local url
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);  // 인증 정보를 쿠키와 함께 보내도록 허용
+        configuration.setAllowCredentials(true); // 인증 정보를 쿠키와 함께 보내도록 허용
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -42,23 +44,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // CORS 적용
-                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 적용
+                .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/user").permitAll()  // 인증 없이 접근 가능한 경로
-                        .requestMatchers("/", "/login/**", "/oauth2/**").permitAll()  // 로그인 페이지 허용
-                        .requestMatchers("/board/**", "/pet/**").authenticated()  // 인증이 필요한 경로
-                        .anyRequest().authenticated()  // 나머지 경로는 인증 필요
+                        .requestMatchers("/board/**","/pet/**", "/chat/**","/api/**").authenticated()  // 모든 API는 로그인 인증 필요
+                        .requestMatchers("/", "/login/**", "/oauth2/**").permitAll() // 인증 없이 접근 가능한 경로 : 로그인 페이지
+                        .anyRequest().authenticated() // 나머지 경로는 인증이 필요
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/")
-                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))  // 커스텀 OAuth2 서비스 사용
-                        .successHandler((request, response, authentication) -> {
-                            // 로그인 후 대시보드로 리다이렉트
+                        .loginPage("/login")  // 로그인 페이지 경로 추가
+                        // .defaultSuccessUrl("/loginSuccess")  // 로그인 성공 시 리다이렉트 경로
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService)) // 커스텀 OAuth2 서비스 사용
+                        .successHandler(((request, response, authentication) -> {
                             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                            // 세션 설정
                             request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
                             response.sendRedirect("http://localhost:3000/dashboard");
-                        })
+                        }))
                 );
 
         return http.build();
@@ -67,9 +70,9 @@ public class SecurityConfig {
     // 로그인 성공 핸들러
     @Bean
     public AuthenticationSuccessHandler successHandler() {
-        return (request, response, authentication) -> {
+        return ((request, response, authentication) -> {
             response.setStatus(HttpStatus.OK.value());
             response.getWriter().flush();
-        };
+        });
     }
 }
