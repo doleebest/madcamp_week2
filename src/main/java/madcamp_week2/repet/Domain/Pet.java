@@ -1,5 +1,6 @@
 package madcamp_week2.repet.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,16 +43,21 @@ public class Pet {
     private String strengths;
 
     @Column
+    private String imageUrl;
+
+    @Column
     private String weaknesses;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonBackReference
     private User user;
 
     @Builder
     public Pet(String name, String birthDate, String gender, String species,
                String personality, String traits, String happyMemory, String mishap,
-               String strengths, String weaknesses, User user) {
+               String strengths, String weaknesses,
+               String imageUrl, User user) {
         this.name = name;
         this.birthDate = birthDate;
         this.gender = gender;
@@ -62,12 +68,13 @@ public class Pet {
         this.mishap = mishap;
         this.strengths = strengths;
         this.weaknesses = weaknesses;
+        this.imageUrl = imageUrl;
         this.user = user;
     }
 
     public void update(String name, String birthDate, String gender, String species,
                        String personality, String traits, String happyMemory, String mishap,
-                       String strengths, String weaknesses) {
+                       String strengths, String weaknesses, String imageUrl) {
         this.name = name;
         this.birthDate = birthDate;
         this.gender = gender;
@@ -78,5 +85,6 @@ public class Pet {
         this.mishap = mishap;
         this.strengths = strengths;
         this.weaknesses = weaknesses;
+        this.imageUrl = imageUrl;
     }
 }

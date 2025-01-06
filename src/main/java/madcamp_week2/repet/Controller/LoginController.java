@@ -13,8 +13,7 @@ public class LoginController {
     }
 
     @GetMapping("/loginSuccess")
-    @ResponseBody
     public String loginSuccess() {
-        return "Login Successful!";
+        return "redirect:http://localhost:3000/dashboard";
     }
 }

@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
 
-    @PostMapping("/start/{petId}")
+    @GetMapping("/start/{petId}")
     public ResponseEntity<ChatResponseDTO> startChat(
             @PathVariable Long petId,
             @AuthenticationPrincipal OAuth2User principal) {
@@ -35,6 +36,8 @@ public class ChatController {
             @PathVariable Long petId,
             @RequestBody ChatRequest request,
             @AuthenticationPrincipal OAuth2User principal) {
+        System.out.println(petId + principal.getName());
+        System.out.println(request.getMessage());
         return ResponseEntity.ok(
                 ChatResponseDTO.from(
                         chatService.sendMessage(
@@ -51,6 +54,7 @@ public class ChatController {
     public ResponseEntity<List<ChatResponseDTO>> getChatHistory(
             @PathVariable Long petId,
             @AuthenticationPrincipal OAuth2User principal) {
+        System.out.println(petId + principal.getName());
         return ResponseEntity.ok(
                 chatService.getChatHistory(petId, principal.getName())
         );
