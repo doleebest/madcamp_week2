@@ -11,8 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,11 +29,31 @@ public class BoardController {
 
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<BoardDto> createBoard(
-            @ModelAttribute BoardRequest request,
+            @RequestParam String title,
+            @RequestParam String content,
             @RequestParam(required = false) MultipartFile imageFile) throws IOException {
         User currentUser = securityUtil.getCurrentUser();
-        BoardDto boardDto = boardService.createBoard(request, imageFile, currentUser);
+        BoardRequest request = new BoardRequest(title, content);
+
+        String filePath = saveImage(imageFile);
+        System.out.println(filePath);
+        BoardDto boardDto = boardService.createBoard(request, filePath, currentUser);
         return ResponseEntity.ok(boardDto);
+    }
+
+    private String saveImage(MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Empty file");
+        }
+
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path directory = Paths.get("uploads/pets");
+        Files.createDirectories(directory);
+
+        Path targetPath = directory.resolve(fileName);
+        Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+
+        return "/uploads/pets/" + fileName;
     }
 
     @GetMapping

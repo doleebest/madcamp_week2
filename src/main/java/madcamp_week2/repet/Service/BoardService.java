@@ -23,14 +23,13 @@ public class BoardService {
 
     // 게시글 생성
     @Transactional
-    public BoardDto createBoard(BoardRequest request, MultipartFile imageFile, User user) throws IOException {
-        String savedFileName = fileService.saveFile(imageFile);
+    public BoardDto createBoard(BoardRequest request, String imageFile, User user) throws IOException {
 
         Board board = Board.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
-                .imageFileName(savedFileName)
-                .originalFileName(imageFile != null ? imageFile.getOriginalFilename() : null)
+                .imageFileName(imageFile)
+                .originalFileName(imageFile)
                 .user(user)
                 .build();
 
