@@ -8,7 +8,9 @@ import madcamp_week2.repet.Domain.User;
 import madcamp_week2.repet.Repository.BoardRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,13 +19,18 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final FileService fileService;
 
     // 게시글 생성
     @Transactional
-    public BoardDto createBoard(BoardRequest request, User user) {
+    public BoardDto createBoard(BoardRequest request, MultipartFile imageFile, User user) throws IOException {
+        String savedFileName = fileService.saveFile(imageFile);
+
         Board board = Board.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
+                .imageFileName(savedFileName)
+                .originalFileName(imageFile != null ? imageFile.getOriginalFilename() : null)
                 .user(user)
                 .build();
 
@@ -53,7 +60,7 @@ public class BoardService {
 
     // 게시글 수정
     @Transactional
-    public BoardDto updateBoard(Long id, BoardRequest request, User user) {
+    public BoardDto updateBoard(Long id, BoardRequest request, MultipartFile newImageFile, User user) throws IOException {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
 
@@ -61,7 +68,25 @@ public class BoardService {
             throw new RuntimeException("Access denied");
         }
 
-        board.update(request.getTitle(), request.getContent());
+        // 새로운 이미지가 업로드된 경우
+        if (newImageFile != null && !newImageFile.isEmpty()) {
+            // 기존 이미지가 있다면 삭제
+            if (board.getImageFileName() != null) {
+                fileService.deleteFile(board.getImageFileName());
+            }
+
+            // 새 이미지 저장
+            String savedFileName = fileService.saveFile(newImageFile);
+            board.updateAll(
+                    request.getTitle(),
+                    request.getContent(),
+                    savedFileName,
+                    newImageFile.getOriginalFilename()
+            );
+        } else {
+            // 이미지 변경 없이 제목과 내용만 업데이트
+            board.update(request.getTitle(), request.getContent());
+        }
         return BoardDto.from(board);
     }
 
@@ -73,6 +98,11 @@ public class BoardService {
 
         if (!board.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("Access denied");
+        }
+
+        // 이미지 파일 삭제
+        if (board.getImageFileName() != null) {
+            fileService.deleteFile(board.getImageFileName());
         }
 
         boardRepository.delete(board);

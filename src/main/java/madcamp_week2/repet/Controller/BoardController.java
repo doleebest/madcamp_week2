@@ -3,17 +3,16 @@ package madcamp_week2.repet.Controller;
 import lombok.RequiredArgsConstructor;
 import madcamp_week2.repet.DTO.BoardRequest;
 import madcamp_week2.repet.DTO.BoardDto;
-import madcamp_week2.repet.Domain.Board;
 import madcamp_week2.repet.Domain.User;
-import madcamp_week2.repet.Repository.BoardRepository;
 import madcamp_week2.repet.Service.BoardService;
 import madcamp_week2.repet.config.auth.SecurityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,10 +21,12 @@ public class BoardController {
     private final BoardService boardService;
     private final SecurityUtil securityUtil;
 
-    @PostMapping
-    public ResponseEntity<BoardDto> createBoard(@RequestBody BoardRequest request) {
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<BoardDto> createBoard(
+            @ModelAttribute BoardRequest request,
+            @RequestParam(required = false) MultipartFile imageFile) throws IOException {
         User currentUser = securityUtil.getCurrentUser();
-        BoardDto boardDto = boardService.createBoard(request, currentUser);
+        BoardDto boardDto = boardService.createBoard(request, imageFile, currentUser);
         return ResponseEntity.ok(boardDto);
     }
 
@@ -50,11 +51,14 @@ public class BoardController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<BoardDto> updateBoard(@PathVariable Long id, @RequestBody BoardRequest request) {
+    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<BoardDto> updateBoard(
+            @PathVariable Long id,
+            @ModelAttribute BoardRequest request,
+            @RequestParam(required = false) MultipartFile imageFile) throws IOException {
         User currentUser = securityUtil.getCurrentUser();
         try {
-            BoardDto boardDto = boardService.updateBoard(id, request, currentUser);
+            BoardDto boardDto = boardService.updateBoard(id, request, imageFile, currentUser);
             return ResponseEntity.ok(boardDto);
         } catch (RuntimeException e) {
             if (e.getMessage().equals("Access denied")) {
