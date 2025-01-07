@@ -36,6 +36,8 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation 'org.json:json:20210307'
 
+	implementation 'javax.servlet:javax.servlet-api:4.0.1' // 로그아웃 구현
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	// JWT 관련 라이브러리 추가

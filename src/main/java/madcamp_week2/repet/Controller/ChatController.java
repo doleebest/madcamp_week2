@@ -36,8 +36,6 @@ public class ChatController {
             @PathVariable Long petId,
             @RequestBody ChatRequest request,
             @AuthenticationPrincipal OAuth2User principal) {
-        System.out.println(petId + principal.getName());
-        System.out.println(request.getMessage());
         return ResponseEntity.ok(
                 ChatResponseDTO.from(
                         chatService.sendMessage(

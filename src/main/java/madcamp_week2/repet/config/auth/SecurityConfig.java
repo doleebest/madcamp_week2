@@ -62,6 +62,19 @@ public class SecurityConfig {
                             request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
                             response.sendRedirect("http://localhost:3000/dashboard");
                         }))
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpStatus.OK.value());
+                            response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+                            response.setHeader("Access-Control-Allow-Credentials", "true");
+                            response.getWriter().write("Logout successful");
+                            response.getWriter().flush();
+                        })
                 );
 
         return http.build();
