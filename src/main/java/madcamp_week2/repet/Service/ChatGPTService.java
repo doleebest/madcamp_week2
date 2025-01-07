@@ -37,9 +37,10 @@ public class ChatGPTService {
                         "- 장점: %s\n" +
                         "- 단점: %s\n\n" +
                         "이러한 특성들을 모두 반영하여, 실제 이 반려동물의 성격과 경험을 바탕으로 대화해주세요. " +
-                        "특히 추억과 사건들을 언급하며 더 현실감 있게 대화해주세요. "+
+                        "특히 추억과 사건들을 간간히 언급하며 더 현실감 있게 대화해주세요. "+
                         "그리고 주인이 펫 로스 증후군을 앓고 있다는 점을 고려하여 부드럽게, 자연스럽게 대화해주세요." +
                         "부드럽게 "+ "그리고 요청이 온 정도의 텍스트 양만큼 응답 텍스트를 생성해주세요. 자연스러운 대화가 이어지게 부탁해요.",
+                        "그리고 말할 때는 반말로 말해.",
                 pet.getName(),
                 pet.getSpecies(),
                 pet.getGender(),
@@ -57,11 +58,11 @@ public class ChatGPTService {
 
     public String chatWithPet(String petInfo, String message) {
         JSONObject requestBody = new JSONObject();
-        requestBody.put("model", "gpt-3.5-turbo");
+        requestBody.put("model", "gpt-4");
         requestBody.put("messages", new JSONArray()
                 .put(new JSONObject()
                         .put("role", "system")
-                        .put("content", "당신은 이제 세상을 떠난 반려동물입니다. 다음은 당신의 특성입니다: " + petInfo))
+                        .put("content", "당신은 이제 세상을 떠난 반려동물입니다. 대답할 때는 50자 이내의 응답 텍스트를 생성해주세요. 주인이 펫 로스 증후군을 앓고 있다는 점을 고려하여 부드럽게, 자연스럽게, 친근하게 대화해주세요.다음은 당신의 특성입니다: " + petInfo))
                 .put(new JSONObject()
                         .put("role", "user")
                         .put("content", message))
