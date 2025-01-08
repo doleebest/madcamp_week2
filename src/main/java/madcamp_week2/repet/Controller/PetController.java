@@ -1,10 +1,13 @@
 package madcamp_week2.repet.Controller;
 
 import com.nimbusds.jose.util.Resource;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import madcamp_week2.repet.Domain.Pet;
 import madcamp_week2.repet.Domain.User;
+import madcamp_week2.repet.Repository.ChatMessageRepository;
 import madcamp_week2.repet.Repository.PetRepository;
+import madcamp_week2.repet.Service.ChatService;
 import madcamp_week2.repet.config.auth.SecurityUtil;
 import madcamp_week2.repet.DTO.PetRequest;
 import org.springframework.core.io.FileSystemResource;
@@ -33,6 +36,8 @@ import java.util.UUID;
 public class PetController {
     private final PetRepository petRepository;
     private final SecurityUtil securityUtil;
+    private final ChatMessageRepository chatMessageRepository;
+    private final ChatService chatService;
 
     @PostMapping("/pets")
     public ResponseEntity<Pet> createPet(
@@ -162,6 +167,7 @@ public class PetController {
         }
     }
 
+    @Transactional
     @DeleteMapping("/pets/{id}")
     public ResponseEntity<Void> deletePet(@PathVariable Long id) {
         User currentUser = securityUtil.getCurrentUser();
@@ -172,6 +178,7 @@ public class PetController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
+        chatMessageRepository.deleteAllByPetIdUserId(pet.getId(), pet.getUser().getId());
         petRepository.delete(pet);
         return ResponseEntity.ok().build();
     }
