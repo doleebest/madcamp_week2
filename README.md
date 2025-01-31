@@ -56,16 +56,16 @@
       <td align="center">기록하기</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/TherapEase-CEOS/TherapEase-FE/assets/86418674/d036e3ac-54bc-4a6c-984d-d74636605cf4.png" width="500" /></td>
-      <td align="center"><img src="https://github.com/TherapEase-CEOS/TherapEase-FE/assets/86418674/3880a408-9c36-4226-8792-b22165d4f933.png" /></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/ba7da632-293e-4e7c-9d56-7cb29ce4b7a9" width="500" /></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/537cb8b4-d423-42f5-9c2d-c80ca9f441c7" width="500"/></td>
     </tr>
     <tr>
       <td align="center">추억하기</td>
       <td align="center">대화하기</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/TherapEase-CEOS/TherapEase-FE/assets/86418674/b3cf47fe-edac-4ff2-936c-03a074b48055.png" /></td>
-      <td align="center"><img src="https://github.com/TherapEase-CEOS/TherapEase-FE/assets/86418674/47ee73dc-bdcd-41c1-8a5b-eb01b750bf70.png" /></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/4a63e1f7-07b2-48fa-83e4-723fa8eea15e" width="500" /></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/6aea33d2-2c1d-4b01-8b7d-ba03e9d9fab3" width="500" /></td>
     </tr>
  </table>
 
