@@ -26,6 +26,10 @@
       <td align="center"><a href="https://github.com/doleebest" target="_blank" width="160">@doleebest</a></td>
     </tr>
       <tr>
+      <td align="center">카이스트 전산학부 21학번</td>
+      <td align="center">이화여대 컴퓨터공학과 21학번</td>
+    </tr>
+      <tr>
       <td align="center">FE</a></td>
       <td align="center">BE, CSS</a></td>
     </tr>
