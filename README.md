@@ -31,7 +31,7 @@
     </tr>
       <tr>
       <td align="center">FE</a></td>
-      <td align="center">BE, CSS</a></td>
+      <td align="center">BE</a></td>
     </tr>
   </table>
   <br>
